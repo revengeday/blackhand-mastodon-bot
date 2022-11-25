@@ -1,0 +1,12 @@
+#/bin/bash
+PATH=YOUR-PATH
+
+# Calculate number of entries in json datafile
+MAXNUMBER=$(/YOUR-PATH-TO-JQ/jq '.[].post' /posts.json | wc -l)
+
+# Fetch random entry from json datafile
+QUOTE=$(/YOUR-PATH-TO-JQ/jq --argjson randomnumber $((RANDOM % $MAXNUMBER)) '.[$randomnumber].post' /YOUR-PATH/posts.json)
+QUOTE="status=${QUOTE}"
+
+# Go!
+/usr/bin/curl -g https://YOUR-INSTANCE.TLD/api/v1/statuses -H 'Authorization: Bearer YOUR-ACCESS-KEY' -F "$QUOTE"
